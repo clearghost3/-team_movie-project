@@ -50,6 +50,7 @@
 </body>
 
 <script>
+
     //영화 사이트 API
     const options = {
         method: 'GET',
@@ -154,13 +155,16 @@
 
     //입력창에서 enter를 누를때 반응
     document.getElementById('floatingTextarea').addEventListener("keypress", function (event) {
-
+        
         if (event.key === "Enter") {
             const cardbox = document.getElementById('cards');
             while (cardbox.firstChild) {
                 cardbox.removeChild(cardbox.firstChild);
             }
             let textvalue = document.getElementById('floatingTextarea').value;
+
+            document.getElementById('floatingTextarea').value=null;
+            event.preventDefault();
 
             results.forEach(data => {
                 if (textmeasure(textvalue, data['original_title'])) {
@@ -204,12 +208,10 @@
                     cardbox.appendChild(col);
                 }
             });
-
-
         }
-        document.getElementById('floatingTextarea').value = "";
+        
     });
-
+    
     setTimeout(function () {
         console.log("TEST START=>");
         console.log("TEST END");
