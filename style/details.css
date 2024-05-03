@@ -1,69 +1,106 @@
-h1 {
-    color: white;
-    font-size: 45px;
-    border: solid 2px grey;
-    margin: 0 auto 0 auto;
-    text-align: center;
-    padding: 100px;
-}
-
-a {
-    text-decoration: none;
-    color: white;
-}
-
 body {
-    margin: 0px;
-    color: white;
-    background-color: black;
+    background-color: white;
+    color: black;
+    border: solid lightgrey 30px;
 }
+
+h1 {
+    font-size: 45px;
+    color: #F2A7B5;
+    margin: 0px auto 60px auto;
+    border-radius: 15px;
+}
+
+#header {
+    border-bottom: solid lightgrey 15px;
+    text-align: center;
+    padding: 60px;
+}
+
+#input_moviename {
+    margin: 0 auto 0 auto;
+    width: 600px;
+    display: grid;
+    grid-template-columns: 1fr 100px;
+}
+
+main {
+    width: 1500px;
+    margin: 0 auto 0 auto;
+}
+
+#detailed_introduction {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
+#movie_info {
+    display: grid;
+    grid-template-rows: 0.2fr 1fr 0.3fr;
+}
+
+.info {
+    margin: 15px;
+    text-align: center;
+    border:solid lightgrey 15px;
+}
+
+#movie_title {
+    
+    font-size: 55px;
+}
+
+#movie_contents {
+    
+}
+
+#movie_write {
+    
+}
+
+#reviewbox {
+    border: solid lightgray 15px;
+    padding: 15px;
+}
+
+#review_btn {
+
+}
+
+.review {
+    border: solid 8px lightgrey;
+    padding:10px;
+    margin:20px;
+}
+
+.user_info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    border: solid lightgrey 3px;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+    width: 500px;
+}
+
+.review_comments {
+    border: solid lightgrey 3px;
+    border-radius: 5px;
+    padding: 5px;
+    width: 1200px;
+}
+
 
 button {
-
+    border-radius: 5px;
 }
 
-.white_btn {
-    padding:5px;
-    font-size:15px;
-    font-weight: 1000;
-    background-color: white;
-    color:black;
-}
-
-.col {
-    border: solid 3px black;
+.pink_btn {
+    border: 3px solid #F2A7B5;
+    background-color: #F2A7B5;
     color: white;
-    background-color: black;
-    padding: 3px;
-}
-
-.card {
-    background-color: transparent;
-}
-
-.card-title {
-    border: solid 3px grey;
-    padding: 3px;
-    margin: 0px;
-}
-
-#inputValue {
-    width: 600px;
-    margin: 0 auto 0 auto;
-    color: black;
-}
-
-#instrument_text {
-    padding-top: 15px;
-    text-align: center;
-}
-
-#card_group {
-    margin: 200px;
-}
-
-#move_btn {
-    border: solid grey 3px;
-    width: 200px;
-    margin: 0 auto 0 auto;
+    margin: 10px;
+    padding: 9px;
 }
