@@ -5,7 +5,8 @@ body {
 }
 
 h1 {
-    color: coral;
+    font-size: 45px;
+    color: #F2A7B5;
     margin: 0px auto 60px auto;
     border-radius: 15px;
 }
@@ -42,23 +43,24 @@ main {
 .info {
     margin: 15px;
     text-align: center;
+    border:solid lightgrey 15px;
 }
 
 #movie_title {
-    border: solid green 3px;
+    
     font-size: 55px;
 }
 
 #movie_contents {
-    border: solid powderblue 3px;
+    
 }
 
 #movie_write {
-    border: solid lightcoral 3px;
+    
 }
 
 #reviewbox {
-    border: solid lightgray 3px;
+    border: solid lightgray 15px;
     padding: 15px;
 }
 
@@ -67,25 +69,25 @@ main {
 }
 
 .review {
-    border:solid 3px coral;
-    padding:3px;
-    margin:10px;
+    border: solid 8px lightgrey;
+    padding:10px;
+    margin:20px;
 }
 
 .user_info {
     display: grid;
     grid-template-columns: 1fr 1fr;
 
-    border: solid grey 3px;
-    border-radius: 15px;
+    border: solid lightgrey 3px;
+    border-radius: 5px;
     padding: 5px;
     margin-bottom: 10px;
     width: 500px;
 }
 
 .review_comments {
-    border: solid grey 3px;
-    border-radius: 15px;
+    border: solid lightgrey 3px;
+    border-radius: 5px;
     padding: 5px;
     width: 1200px;
 }
@@ -96,8 +98,8 @@ button {
 }
 
 .pink_btn {
-    border: 3px solid #FF1493;
-    background-color: #FF69B4;
+    border: 3px solid #F2A7B5;
+    background-color: #F2A7B5;
     color: white;
     margin: 10px;
     padding: 9px;
