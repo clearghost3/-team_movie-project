@@ -104,3 +104,69 @@ button {
     margin: 10px;
     padding: 9px;
 }
+
+@media (max-width :1600px) {
+    #movie_info {
+        width:900px
+    }
+    #reviewbox {
+        width: 1400px;
+    }
+    .review_comments {
+        width:1100px;
+    }
+}
+
+@media (max-width :1500px) {
+    #movie_info {
+        width:800px
+    }
+    #reviewbox {
+        width: 1300px;
+    }
+    .review_comments {
+        width: 1000px;
+    }
+}
+
+@media (max-width :1400px) {
+    #movie_info {
+        width:700px
+    }
+    #reviewbox {
+        width: 1200px;
+    }
+    .review_comments {
+        width: 900px;
+    }
+}
+
+@media (max-width :1300px) {
+    #movie_info {
+        width:600px;
+    }
+    #reviewbox {
+        width: 1100px;
+    }
+    .review_comments {
+        width: 800px;
+    }
+}
+
+@media (max-width :1200px) {
+    #movie_info {
+        width:500px
+    }
+    #reviewbox {
+        width: 1000px;
+    }
+    .review_comments {
+        width: 700px;
+    }
+}
+
+@media (max-width :1100px) {
+    #movie_info {
+        display: none;
+    }
+}
