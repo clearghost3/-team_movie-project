@@ -110,12 +110,7 @@ function addButtonEvent($commentCotainer){
 
     $editButton.addEventListener("click", function(e){
         let isDisabled = $commentInput.disabled;
-        if(confirm("s")){
-            alert("true");
-        }
-        else{
-            alert("false");
-        }
+
         alert("edit button clicked!");
         //console.log($commentInput.getAttribute('value'));
         // 수정 요청 시 if문, 수정 완료 시 else문 진입.
@@ -147,15 +142,7 @@ function addButtonEvent($commentCotainer){
         
         if(!isCorrectPassword($deleteButton.parentElement.getAttribute("value"))) return;
 
-        let sdssdsdsdd = confirm("정말로 삭제하시겠습니까?");
-        console.log(typeof sdssdsdsdd);
-        if(sdssdsdsdd){
-            alert("if condition: true");
-        }
-        else{
-            alert("if condition: false");
-        }
-        if("true" === confirm("정말로 삭제하시겠습니까?")){          
+        if(confirm("정말로 삭제하시겠습니까?")){          
             // $deleteButton.parentElement.remove();
             
             let arr = JSON.parse(window.localStorage.getItem(movie_id));
