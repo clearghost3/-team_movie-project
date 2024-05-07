@@ -1,10 +1,12 @@
 const $detailContainer = document.querySelector('#detailed_introduction');
-const $reviewBox = document.querySelector('#reviewbox');
+const $commentBox = document.querySelector('#reviewbox');
 const $encryptScript = document.createElement('script');
+
 const movie_id = new URLSearchParams(location.search).get("id");
 
 let movie;
 let movieConfig;
+let comment_list = JSON.parse(localStorage.getItem(movie_id));
 
 // 임시로 본인 API키 사용 중....
 const options = {
@@ -20,6 +22,7 @@ init();
 
 function init() {
 
+    // SHA-256 암호화 스크립트 가져옴.
     $encryptScript.src = "https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js";
     document.head.appendChild($encryptScript);
 
@@ -34,7 +37,8 @@ function init() {
                     movie = response;
                     //console.log(movie);
                     loadMovieDetails();     // 영화의 자세한 정보를 가져온다.
-                    loadReviews();          // 해당 영화의 리뷰를 가져온다.
+                    loadcomments();          // 해당 영화의 리뷰를 가져온다.
+                    addEventToModal();
                 })
                 .catch(err => console.error(err));
         })
@@ -53,45 +57,46 @@ function loadMovieDetails() {
 }
 
 // 저장된 리뷰들을 불러오는 함수
-function loadReviews(){
+function loadcomments(){
 
+    // 저장된 리뷰가 없다면 리턴.
     if(localStorage.getItem(movie_id) === null) return;
     
-    let reviewList = JSON.parse(localStorage.getItem(movie_id));
-    for(let i = 0; i < reviewList.length; i++){
-        //console.log(`${reviewList[i].password}, ${reviewList[i].comment}`);
-        appendReview(reviewList[i], i);
+    // 저장된 모든 리뷰들을 리뷰칸에 추가한다.
+    let commentList = JSON.parse(localStorage.getItem(movie_id));
+    for(let i = 0; i < commentList.length; i++){
+        appendcomment(commentList[i], i);
     }
 }
 
-// 1개의 리뷰를 리뷰칸에 추가한다.
-function appendReview(review_info, review_id) {
-    const $reviewCotainer = document.createElement('div');
-    $reviewCotainer.setAttribute("class", "review");
-    $reviewCotainer.setAttribute("value", review_info.password);
-    $reviewCotainer.setAttribute("id", review_id);
-    //console.log(review_info);
+// 리뷰를 리뷰칸에 추가한다.
+function appendcomment(comment_info, comment_id) {
+    const $commentCotainer = document.createElement('div');
+
+    $commentCotainer.setAttribute("class", "review");
+    $commentCotainer.setAttribute("value", comment_info.password);
+    $commentCotainer.setAttribute("id", comment_id);
+    
     let temp_html = `
         <div class="user_info">
-            <div>${review_info.nickname}</div>
-            <div>score: ${review_info.rate}</div>
+            <div>${comment_info.nickname}</div>
+            <div>score: ${comment_info.rate}</div>
         </div>
         <img src="assets/edit-button.png" class="edit-btn" style="width: 50px; height: 50px;"></img>
         <img src="assets/delete-button.png" class="delete-btn" style="width: 50px; height: 50px;"></img>
         <div class="review_comments">
-        <input type="textarea" value="${review_info.comment}" disabled>  
+            ${comment_info.comment}
         </div>
-        <br>
     `;
 
-    $reviewCotainer.innerHTML = temp_html;
-
-    addButtonEvent($reviewCotainer);
+    $commentCotainer.innerHTML = temp_html;
+    addEventToComment($commentCotainer);
      
-    $reviewBox.append($reviewCotainer);
+    $commentBox.append($commentCotainer);
 }
 
-function isCorrectPassword(password_correct){
+// 비밀번호를 확인하는 함수. 일치 시 true, 아닐 시 false 반환.
+function checkPassword(password_correct){
     const password_try = prompt('비밀번호를 입력하세요:');
 
     if (password_try && sha256(password_try) === password_correct) {
@@ -103,61 +108,146 @@ function isCorrectPassword(password_correct){
     return false;
 }
 
-function addButtonEvent($commentCotainer){
+// 리뷰에 버튼 이벤트 추가.
+function addEventToComment($commentCotainer){
     const $editButton = $commentCotainer.querySelector('.edit-btn');
     const $deleteButton = $commentCotainer.querySelector('.delete-btn');
-    const $commentInput = $commentCotainer.querySelector('input');
-
+    
     $editButton.addEventListener("click", function(e){
-        let isDisabled = $commentInput.disabled;
-
+        e.preventDefault();
         alert("edit button clicked!");
-        //console.log($commentInput.getAttribute('value'));
-        // 수정 요청 시 if문, 수정 완료 시 else문 진입.
-        if(isDisabled){
 
-            if(isCorrectPassword($commentCotainer.getAttribute('value'))){
-                $commentInput.disabled = false;
-            }
-            
-        }
-        else{
-            $commentInput.disabled = true;
-
-            let arr = JSON.parse(window.localStorage.getItem(movie_id));
-            let idx = $editButton.parentElement.getAttribute('id');
-
-            let text_um = $commentInput.value;
-            console.log(text_um);
-            arr[idx].comment = text_um;
-            window.localStorage.setItem(movie_id, JSON.stringify(arr));
-
-            alert("edit completed!");
-        }
+        if(checkPassword($commentCotainer.getAttribute('value'))){
         
+            let idx = $editButton.parentElement.getAttribute('id');
+            
+            openModal('edit', idx);
+        }
+            
     })
     
     $deleteButton.addEventListener("click", function(e){
-        //e.preventDefault();
+        e.preventDefault();
         
-        if(!isCorrectPassword($deleteButton.parentElement.getAttribute("value"))) return;
+        if(!checkPassword($deleteButton.parentElement.getAttribute("value"))) return;
 
         if(confirm("정말로 삭제하시겠습니까?")){          
-            // $deleteButton.parentElement.remove();
-            
-            let arr = JSON.parse(window.localStorage.getItem(movie_id));
+                          
             let idx = $deleteButton.parentElement.getAttribute('id');
-            console.log(idx);
-            arr.splice(idx, 1);
-            window.localStorage.setItem(movie_id, JSON.stringify(arr));
+            //console.log(idx);
+            comment_list.splice(idx, 1);
+            window.localStorage.setItem(movie_id, JSON.stringify(comment_list));
 
-            alert("This comment has been deleted!!");
-            //console.log("test");
+            alert("해당 댓글이 삭제되었습니다.");
             window.location.reload();
         }   
         
-        // let message = "2323";
-        // let hash = sha256(message);
-        // console.log(hash);
     })
 }
+
+//------------------------------ 모달 관련 함수 시작 -----------------------
+
+// 모달에 버튼 기능 달아주는 함수.
+function addEventToModal(){
+    document.getElementById('commentBtn').addEventListener('click', function () {
+        openModal("create", -1);
+    });
+
+    document.getElementById('modalForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        submitComment();
+    });
+
+    document.getElementById('modalCancelBtn').addEventListener('click', function () {
+        closeModal();
+    });
+}
+
+// action에 따른 모달 창 open하는 함수. action: create | edit
+function openModal(action, commentIndex) {
+
+    // 모달 디스플레이 ON
+    document.getElementById('commentModal').style.display = 'block';
+    
+    if(action == "create") {        
+        // 리뷰 새로 쓰는 경우.
+        document.getElementById('userNameModal').value = '';
+        document.getElementById('userPasswordModal').value = '';
+        document.getElementById('userCommentModal').value = '';
+        document.getElementById('modalSubmitBtn').removeAttribute('data-index');
+        document.getElementById('modalSubmitBtn').setAttribute('status', action);
+    }
+    else if (action === 'edit') {   
+        // 리뷰를 편집하는 경우.    
+        let comment = comment_list[commentIndex];
+        document.getElementById('userNameModal').value = comment.nickname;
+        // document.getElementById('userPasswordModal').value = comment.password;
+        document.getElementById('userCommentModal').value = comment.comment;
+        document.getElementById('modalSubmitBtn').setAttribute('data-index', commentIndex);
+        document.getElementById('modalSubmitBtn').setAttribute('status', action);
+    } 
+    else{
+        // 존재하지 않는 action으로 해당 함수로 진입한 경우.
+        alert("inValid Access to openModal fuction");
+        document.getElementById('commentModal').style.display = 'none';
+    }
+}
+
+// 모달 창 닫는 함수.
+function closeModal() {
+    document.getElementById('commentModal').style.display = 'none';
+}
+
+// 모달 창 등록, 수정 시 localStorage에 데이터 저장
+function submitComment() {
+    let userName = document.getElementById('userNameModal').value;
+    let userComment = document.getElementById('userCommentModal').value;
+    let userPassword = document.getElementById('userPasswordModal').value;
+    let openStatus = document.getElementById('modalSubmitBtn').getAttribute('status');
+    
+    if (userName !== "" && userComment !== "" && makeValidPassword(userPassword)) {
+        
+        if(openStatus == "create"){
+            
+            let comment_data = {"nickname": userName, "comment": userComment, "rate": "⭐⭐⭐⭐⭐", "password": sha256(userPassword)};
+            
+            // 한 번도 해당 영화에 코멘트가 적힌 적이 없다면 빈 배열 껍데기 만들고 push.
+            if(comment_list === null){
+                comment_list = [];       
+            }
+
+            comment_list.push(comment_data);
+                    
+            window.localStorage.setItem(movie_id, JSON.stringify(comment_list));
+            
+            alert("댓글이 등록되었습니다.");
+        }
+        else if(openStatus == "edit"){
+            let comment_idx = document.getElementById('modalSubmitBtn').getAttribute('data-index');
+            let comment_data = {"nickname": userName, "comment": userComment, "rate": "⭐⭐⭐⭐⭐", "password": sha256(userPassword)};
+              
+            // console.log(userName, userComment, userPassword, openStatus, comment_idx);
+
+            comment_list[comment_idx] = comment_data;
+            window.localStorage.setItem(movie_id, JSON.stringify(comment_list));
+
+            alert("수정 완료!");
+        }
+        else{
+            alert("inValid Submit");
+        }
+               
+        window.location.reload();
+        
+    } else {
+        alert("입력하신 닉네임과 비밀번호, 리뷰를 다시 한 번 확인해주세요");
+    }
+}
+
+// 비밀번호 유효성 검사(8자리이상 영문 대/소문자, 숫자, 특수문자 포함)
+function makeValidPassword(userPassword) {
+    return true;
+    const reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    return reg.test(userPassword);
+}
+

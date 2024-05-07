@@ -10,8 +10,52 @@
     <link rel="stylesheet" href="style/details.css">
     <link rel="stylesheet" href="style/fontstyle/fontstyle.css">
 
-    <!-- <script type="module" src="src/comment.js"></script> -->
+    <!-- <script type="module" src="src/modal.js"></script> -->
     <script type="module" src="src/detail.js"></script>
+
+    <style>
+        .commentInputbtn {
+            margin-top: 10px;
+        }
+
+        .commentOutput {
+            margin-top: 50px;
+        }
+
+        table,
+        td {
+            border-collapse: collapse;
+            width: 800px;
+        }
+
+        table td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal input,
+        .modal textarea {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            padding: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -43,9 +87,10 @@
                     content
                 </div>
                 <div" id="movie_write">
-                    <button type="button" class="pink_btn" style="width: 100%; font-size: 70px;">Write review</button>
-                </div>
+                    <button type="button" class="pink_btn" id="commentBtn" style="width: 100%; font-size: 70px;">Write
+                        review</button>
             </div>
+        </div>
         </div>
 
         <!--리뷰 블럭-->
@@ -55,7 +100,7 @@
 
             <div class="review">
                 <div class="user_info">
-                    <div>user_name: Dal</div>
+                    <div>user_name: Sample</div>
                     <div>score: ⭐⭐⭐⭐⭐</div>
                 </div>
                 <img src="assets/edit-button.png" class="edit-btn" style="width: 50px; height: 50px;"></button>
@@ -67,9 +112,31 @@
 
         </div>
 
-        <!-- <script> for (let i = 0; i < 40; i++) document.write("<br>"); </script> -->
-        <button type="button" class="pink_btn" style="font-size: 15;padding: 7px;">핑크색 버튼</button>
     </main>
+
+    <!-- 모달 -->
+    <div id="commentModal" class="modal">
+        <form id="modalForm">
+            <div>
+                <label for="userNameModal">닉네임</label>
+                <input type="text" id="userNameModal" name="nicknameModal" placeholder="닉네임을 적어주세요">
+            </div>
+            <div>
+                <label for="userPasswordModal">비밀번호</label>
+                <input type="text" id="userPasswordModal" name="PasswordModal"
+                    placeholder="비밀번호는 숫자/특수문자/영문 대문자/소문자를 모두 포함한 8자리 이상으로 작성해주세요">
+            </div>
+            <div>
+                <label for="userCommentModal">영화 리뷰</label>
+                <textarea name="commentModal" id="userCommentModal" rows="25" cols="30"
+                    placeholder="리뷰를 적어주세요"></textarea>
+            </div>
+            <div class="commentInputbtn">
+                <button type="submit" id="modalSubmitBtn">등록</button>
+                <button type="button" id="modalCancelBtn">취소</button>
+            </div>
+        </form>
+    </div>
 </body>
 
 
