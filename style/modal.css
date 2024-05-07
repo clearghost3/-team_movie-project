@@ -1,0 +1,38 @@
+.commentInputbtn {
+    margin-top: 10px;
+}
+
+.commentOutput {
+    margin-top: 50px;
+}
+
+table,
+td {
+    border-collapse: collapse;
+    width: 800px;
+}
+
+table td {
+    padding: 10px;
+    text-align: center;
+}
+
+.modal {
+    display: none;
+    width: 600px;
+    height: 600px;
+    transform: translate(150%, 50%);
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal input,
+.modal textarea {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding: 5px;
+}
