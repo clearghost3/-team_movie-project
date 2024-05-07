@@ -19,6 +19,9 @@
     <!--영화 검색창-->
 
     <div id="header">
+        <a href="index.html" style="float: left;">
+            <img src="assets/home-button.png" alt="home-btn" style="width: 50px; height:50px;"></img>
+        </a>
         <h1 class="merriweather-bold" style="border: solid pink 9px; padding: 7px;width: 800px;">Search a Movie, Such a
             Movie</h1>
 
@@ -82,6 +85,16 @@
                 <label for="userPasswordModal">비밀번호</label>
                 <input type="text" id="userPasswordModal" name="PasswordModal"
                     placeholder="비밀번호는 숫자/특수문자/영문 대문자/소문자를 모두 포함한 8자리 이상으로 작성해주세요">
+            </div>
+            <div>
+                <label for="userRateModal">별점</label>
+                <select name="Rate" id="userRateModal">
+                    <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐</option>
+                    <option value="⭐⭐⭐⭐">⭐⭐⭐⭐</option>
+                    <option value="⭐⭐⭐">⭐⭐⭐</option>
+                    <option value="⭐⭐">⭐⭐</option>
+                    <option value="⭐">⭐</option>
+                </select>
             </div>
             <div>
                 <label for="userCommentModal">영화 리뷰</label>

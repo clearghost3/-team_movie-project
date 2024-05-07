@@ -203,13 +203,14 @@ function submitComment() {
     let userName = document.getElementById('userNameModal').value;
     let userComment = document.getElementById('userCommentModal').value;
     let userPassword = document.getElementById('userPasswordModal').value;
+    let userRate = document.getElementById('userRateModal').value;
     let openStatus = document.getElementById('modalSubmitBtn').getAttribute('status');
     
-    if (userName !== "" && userComment !== "" && makeValidPassword(userPassword)) {
+    if (userName !== "" && userComment !== "" && userPassword !== "" && makeValidPassword(userPassword)) {
         
         if(openStatus == "create"){
             
-            let comment_data = {"nickname": userName, "comment": userComment, "rate": "⭐⭐⭐⭐⭐", "password": sha256(userPassword)};
+            let comment_data = {"nickname": userName, "comment": userComment, "rate": userRate, "password": sha256(userPassword)};
             
             // 한 번도 해당 영화에 코멘트가 적힌 적이 없다면 빈 배열 껍데기 만들고 push.
             if(comment_list === null){
@@ -224,7 +225,7 @@ function submitComment() {
         }
         else if(openStatus == "edit"){
             let comment_idx = document.getElementById('modalSubmitBtn').getAttribute('data-index');
-            let comment_data = {"nickname": userName, "comment": userComment, "rate": "⭐⭐⭐⭐⭐", "password": sha256(userPassword)};
+            let comment_data = {"nickname": userName, "comment": userComment, "rate": userRate, "password": sha256(userPassword)};
               
             // console.log(userName, userComment, userPassword, openStatus, comment_idx);
 
@@ -246,7 +247,6 @@ function submitComment() {
 
 // 비밀번호 유효성 검사(8자리이상 영문 대/소문자, 숫자, 특수문자 포함)
 function makeValidPassword(userPassword) {
-    return true;
     const reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
     return reg.test(userPassword);
 }
