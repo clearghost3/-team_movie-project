@@ -21,7 +21,7 @@ table td {
     display: none;
     width: 600px;
     height: 600px;
-    transform: translate(150%, 50%);
+    transform: translate(100%, 0%);
     background-color: #ffffff;
     padding: 20px;
     border: 1px solid #ccc;
