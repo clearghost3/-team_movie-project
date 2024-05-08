@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="style/style.css">
+</head>
+
+
+<body>
+  <h1 style="
+    background-image: url('assets/h1_film.jpg');
+    background-position: center; 
+    background-size: cover;
+    
+    margin-bottom:45px;">
+    <a href="index.html">개인과제_영화사이트 (current 버전)</a>
+  </h1>
+  <main>
+    <div id="inputValue"> <!--영화 검색창-->
+
+      <div class="form-floating">
+        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea">
+
+                </textarea>
+        <label for="floatingTextarea">영화 제목</label>
+      </div>
+    </div>
+
+
+    <!--영화 목록들-->
+    <div id="card_group">
+      <div class="row row-cols-1 row-cols-md-3 g-4" id="cards">
+      </div>
+    </div>
+
+    <!--영화 페이지 이동-->
+    <div id="move_btn" style="text-align: center;">
+      <button id="back_btn" class="white_btn">&lt;</button> <button id="front_btn" class="white_btn">&gt;</button>
+    </div>
+
+    <script>for (let i = 0; i < 4; i++) document.write("<br>"); </script>
+  </main>
+
+</body>
+
+<script>
+
+  //test//===============================================================//test//
+
+
+
+  //test//===============================================================//test//
+
+  //영화 사이트 API
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwODE2MjU1ZDRlZjRkMjljMTk1MWEwYzllZTc0MzhlMyIsInN1YiI6IjY2MmNhYTJhZjZmZDE4MDEyODIyMzFiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.mL2dduBP0Qzg4Pqy8gMLYnXHu0g8LfmQA0FQoaQngVQ'
+    }
+  };
+
+  let results;
+  let results_cash = [];
+  let page = 1;
+
+  //영화 데이터 results값만 받아오기
+  fetch(`https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${page}`, options)
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+
+      results = response['results'];
+      results_cash['page'] = response[results];
+
+    });
+
+
+
+
+
+
+
+  function cardallremover() {
+    const cardbox = document.getElementById('cards');
+    while (cardbox.firstChild) {
+      cardbox.removeChild(cardbox.firstChild);
+    };
+  }
+
+  function cardmaker() {
+    const cardbox = document.getElementById('cards');
+    //카드 제거 작업
+    cardallremover();
+
+    //카드 생성 작업
+    results.forEach(data => {
+      const movie_title = data['original_title'];
+      const movie_review = data['overview'];
+      const movie_image = data['poster_path'];
+      const movie_rating = data['vote_average'];
+      const movie_id = data['id'];
+
+      //카드의 요소들 생성
+      const col = document.createElement('div');
+      col.classList.add('col');
+
+      const card = document.createElement('div');
+      card.classList.add('card');
+
+      const image = document.createElement('img');
+      image.classList.add('card-img-top');
+      image.src = `https://image.tmdb.org/t/p/w500${movie_image}`;
+      image.alt = "인식되지 않음";
+      image.onclick = function () {
+        alert(`id: ${movie_id}`);
+        location.href = `details.html?id=${movie_id}`;
+      };
+
+      const cardbody = document.createElement('div');
+      cardbody.classList.add('carrd-body');
+
+      const title = document.createElement('h5');
+      title.classList.add('card-title');
+      //title.innerText = movie_title;
+
+      const text = document.createElement('p');
+      text.classList.add('card-text');
+      //text.innerText = `${movie_review}\nRating: ${movie_rating}`;
+
+      cardbody.appendChild(title);
+      cardbody.appendChild(text);
+      card.appendChild(image);
+      card.appendChild(cardbody);
+      col.appendChild(card);
+      cardbox.appendChild(col);
+
+    });
+  }
+
+
+
+  setTimeout(cardmaker, 500);
+
+
+
+  //.catch(err => console.error(err));
+  let textmeasure = (a, b) => {//대문자 소문자 상관없이 인식하는 함수 a와 b를 비교함
+    let i = 0;
+    while (a[i]) {
+      if (a[i] !== b[i] && String.fromCharCode(a[i].charCodeAt() - 32) !== b[i])
+        return false;
+      i++;
+    }
+    return true;
+  }
+
+  //상호작용 목록
+
+  //1.입력창에서 enter를 누를때 반응
+  document.getElementById('floatingTextarea').addEventListener("keypress", function (event) {
+
+    if (event.key === "Enter") {
+      const cardbox = document.getElementById('cards');
+
+      //카드 전부 제거
+      while (cardbox.firstChild) {
+        cardbox.removeChild(cardbox.firstChild);
+      }
+
+      let textvalue = document.getElementById('floatingTextarea').value;
+
+      document.getElementById('floatingTextarea').value = null;
+      event.preventDefault();
+
+      results.forEach(data => {
+        if (textmeasure(textvalue, data['original_title'])) {
+          const movie_title = data['original_title'];
+          const movie_review = data['overview'];
+          const movie_image = data['poster_path'];
+          const movie_rating = data['vote_average'];
+          const movie_id = data['id'];
+
+          //카드의 요소들 생성
+          const col = document.createElement('div');
+          col.classList.add('col');
+
+          const card = document.createElement('div');
+          card.classList.add('card');
+
+          const image = document.createElement('img');
+          image.classList.add('card-img-top');
+          image.src = `https://image.tmdb.org/t/p/w500${movie_image}`;
+          image.alt = "인식되지 않음";
+          image.onclick = function () {
+            alert(`id: ${movie_id}`);
+          };
+
+          const cardbody = document.createElement('div');
+          cardbody.classList.add('carrd-body');
+
+          const title = document.createElement('h5');
+          title.classList.add('card-title');
+          //title.innerText = movie_title;
+
+          const text = document.createElement('p');
+          text.classList.add('card-text');
+          //text.innerText = `${movie_review}\nRating: ${movie_rating}`;
+
+          cardbody.appendChild(title);
+          cardbody.appendChild(text);
+          card.appendChild(image);
+          card.appendChild(cardbody);
+          col.appendChild(card);
+          cardbox.appendChild(col);
+        }
+      });
+    }
+
+  });
+
+  //다음으로 넘어가는 버튼을 눌렀을 때  사용기전: 데이터를 수집하여 저장하기 때문에 필요이상의 데이터를 캐시로 가지지 않는다.
+  document.getElementById('front_btn').addEventListener("click", function (event) {
+    page++;
+    console.log(page);
+    if (results_cash[page] === undefined) {
+      fetch(`https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${page}`, options)
+        .then(response => response.json())
+        .then(response => {
+          results_cash[page]=response['results'];
+          results=results_cash[page];
+          cardmaker();
+        })
+    }
+    else {
+      results = results_cash[page];
+      cardmaker();
+    }
+  })
+  //이전으로 돌아가는 버튼을 눌렀을 때 사용기전: 위와 같다. 압축 가능
+  document.getElementById('back_btn').addEventListener("click", function (event) {
+    page--;
+    if (page<=0) {
+      page=1;
+    }
+
+    if (results_cash[page] === undefined) {
+      fetch(`https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${page}`, options)
+        .then(response => response.json())
+        .then(response => {
+          results_cash[page]=response['results'];
+          results=results_cash[page];
+          cardmaker();
+        })
+    }
+    else {
+      results = results_cash[page];
+      cardmaker();
+    }
+  })
+
+
+</script>
+
+</html>

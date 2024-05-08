@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1><a href="test_loacalstorage1.html">button3</a></h1>
+    <button id="savedata_btn">if you press this button, remove data on localstrage.</button>
+
+
+
+
+</body>
+
+<script>
+    let response;
+    document.getElementById('savedata_btn').addEventListener("click",function () {
+        window.localStorage.clear();
+        alert("successfully removed on all windows");
+        console.log(response);
+    })
+    
+</script>
+</html>
