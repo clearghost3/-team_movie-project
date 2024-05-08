@@ -9,15 +9,19 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="style/details.css">
     <link rel="stylesheet" href="style/fontstyle/fontstyle.css">
-    <style>
+    <link rel="stylesheet" href="style/modal.css">
+    <!-- <script type="module" src="src/modal.js"></script> -->
+    <script type="module" src="src/detail.js"></script>
 
-    </style>
 </head>
 
 <body>
     <!--영화 검색창-->
 
     <div id="header">
+        <a href="index.html" style="float: left;">
+            <img src="assets/home-button.png" alt="home-btn" style="width: 50px; height:50px;"></img>
+        </a>
         <h1 class="merriweather-bold" style="border: solid pink 9px; padding: 7px;width: 800px;">Search a Movie, Such a
             Movie</h1>
 
@@ -43,7 +47,8 @@
                     content
                 </div>
                 <div" id="movie_write">
-                    <button type="button" class="pink_btn" style="width: 100%; font-size: 70px;">Write review</button>
+                    <button type="button" class="pink_btn" id="commentBtn" style="width: 100%; font-size: 70px;">Write
+                        review</button>
             </div>
         </div>
         </div>
@@ -55,20 +60,53 @@
 
             <div class="review">
                 <div class="user_info">
-                    <div>user_name: Dal</div>
+                    <div>user_name: Sample</div>
                     <div>score: ⭐⭐⭐⭐⭐</div>
                 </div>
+                <img src="assets/edit-button.png" class="edit-btn" style="width: 50px; height: 50px;"></button>
+                <img src="assets/delete-button.png" class="delete-btn" style="width: 50px; height: 50px;"></button>
                 <div class="review_comments">
                     사람은 자신이 피해자라고 생각하는것엔 매우 민감하지만, 가해자라고 깨닫는것은 어렵다. - 사카모토 유지 (각본가)<br>오랜만에 극장에서 좋은 영화를 본것같다
-
                 </div>
             </div>
 
         </div>
 
-        <script> for (let i = 0; i < 40; i++) document.write("<br>"); </script>
-        <button type="button" class="pink_btn" style="font-size: 15;padding: 7px;">핑크색 버튼</button>
     </main>
+
+    <!-- 모달 -->
+    <div id="commentModal" class="modal">
+        <form id="modalForm">
+            <div>
+                <label for="userNameModal">닉네임</label>
+                <input type="text" id="userNameModal" name="nicknameModal" placeholder="닉네임을 적어주세요">
+            </div>
+            <div>
+                <label for="userPasswordModal">비밀번호</label>
+                <input type="text" id="userPasswordModal" name="PasswordModal"
+                    placeholder="비밀번호는 숫자/특수문자/영문 대문자/소문자를 모두 포함한 8자리 이상으로 작성해주세요">
+            </div>
+            <div>
+                <label for="userRateModal">별점</label>
+                <select name="Rate" id="userRateModal">
+                    <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐</option>
+                    <option value="⭐⭐⭐⭐">⭐⭐⭐⭐</option>
+                    <option value="⭐⭐⭐">⭐⭐⭐</option>
+                    <option value="⭐⭐">⭐⭐</option>
+                    <option value="⭐">⭐</option>
+                </select>
+            </div>
+            <div>
+                <label for="userCommentModal">영화 리뷰</label>
+                <textarea name="commentModal" id="userCommentModal" rows="25" cols="30"
+                    placeholder="리뷰를 적어주세요"></textarea>
+            </div>
+            <div class="commentInputbtn">
+                <button type="submit" id="modalSubmitBtn">등록</button>
+                <button type="button" id="modalCancelBtn">취소</button>
+            </div>
+        </form>
+    </div>
 </body>
 
 

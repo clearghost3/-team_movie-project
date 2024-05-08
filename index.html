@@ -126,6 +126,7 @@
       image.alt = "인식되지 않음";
       image.onclick = function () {
         alert(`id: ${movie_id}`);
+        location.href = `details.html?id=${movie_id}`;
       };
 
       const cardbody = document.createElement('div');
